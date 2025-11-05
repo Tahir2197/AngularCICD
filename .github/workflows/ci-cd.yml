@@ -6,19 +6,20 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+          cache: 'npm'
           
       - name: Install Dependencies
         run: npm ci
         
-      - name: Build Application
+      - name: Build Angular App
         run: npm run build --configuration=production
         
       - name: Upload Build Artifact
@@ -29,51 +30,51 @@ jobs:
           retention-days: 1
 
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Download Build Artifact
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
-          
+
       - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          
+
       - name: Login to Azure Container Registry
         run: az acr login --name myacr
-        
+
       - name: Build and Push Docker Image
         run: |
           docker build -t myacr.azurecr.io/demo-app:latest .
           docker push myacr.azurecr.io/demo-app:latest
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: docker
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      
+
       - name: Setup kubectl
         uses: azure/setup-kubectl@v3
-        
+
       - name: Get AKS Credentials
         run: az aks get-credentials --resource-group myaks-rg --name myaks
-        
+
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -f k8s/deployment.yaml
