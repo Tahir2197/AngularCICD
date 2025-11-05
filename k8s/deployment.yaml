@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+
+kind: Deployment
+
+metadata:
+
+  name: demo-angular
+
+spec:
+
+  replicas: 2
+
+  selector:
+
+    matchLabels:
+
+      app: demo-angular
+
+  template:
+
+    metadata:
+
+      labels:
+
+        app: demo-angular
+
+    spec:
+
+      containers:
+
+      - name: demo-angular
+
+        image: myacr.azurecr.io/demo-app:latest
+
+        ports:
+
+        - containerPort: 80
+
+ 
