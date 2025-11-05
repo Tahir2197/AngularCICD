@@ -75,7 +75,7 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group CICDAngularCluster-rg --name CICDAngularCluster
+        run: az aks get-credentials --resource-group TriDevCICD --name CICDAngularCluster
 
       - name: Deploy to Kubernetes
         run: |
