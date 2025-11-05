@@ -56,8 +56,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t CICDAngularRegistery.azurecr.io/demo-app:latest .
-          docker push CICDAngularRegistery.azurecr.io/demo-app:latest
+          docker build -t CICDAngularRegistery.azurecr.io/angularcicd:latest .
+          docker push CICDAngularRegistery.azurecr.io/angularcicd:latest
 
   deploy:
     runs-on: ubuntu-24.04
@@ -75,7 +75,7 @@ jobs:
         uses: azure/setup-kubectl@v3
 
       - name: Get AKS Credentials
-        run: az aks get-credentials --resource-group myaks-rg --name myaks
+        run: az aks get-credentials --resource-group CICDAngularCluster-rg --name CICDAngularCluster
 
       - name: Deploy to Kubernetes
         run: |
