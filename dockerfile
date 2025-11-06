@@ -12,11 +12,12 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY dist/angular-practice/ /usr/share/nginx/html/
 
 # Copy custom Nginx configuration
-# Use /etc/nginx/conf.d/default.conf (preferred for modular configs)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 
-# Set proper permissions for Nginx user
-RUN chown -R nginx:nginx /usr/share/nginx/html && \
+# Set proper permissions and create required directories
+RUN mkdir -p /var/cache/nginx && \
+    chown -R nginx:nginx /var/cache/nginx && \
+    chown -R nginx:nginx /usr/share/nginx/html && \
     chmod -R 755 /usr/share/nginx/html
 
 # Expose HTTP port
