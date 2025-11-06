@@ -8,7 +8,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY dist/angular-practice/ /usr/share/nginx/html/
 
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Set permissions
 RUN chown -R nginx:nginx /usr/share/nginx/html && \
