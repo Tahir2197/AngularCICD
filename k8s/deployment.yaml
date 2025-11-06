@@ -27,13 +27,11 @@ spec:
     spec:
 
       containers:
-
       - name: demo-angular
-
-        image: myacr.azurecr.io/demo-app:latest
-
+        image: cicdangularregistery.azurecr.io/angularcicd:latest
         ports:
-
         - containerPort: 80
+      imagePullSecrets:
+      - name: acr-auth-secret
 
  
