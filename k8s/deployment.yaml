@@ -29,6 +29,7 @@ spec:
       containers:
       - name: demo-angular
         image: cicdangularregistery.azurecr.io/angularcicd:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 80
       imagePullSecrets:
